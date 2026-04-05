@@ -72,9 +72,93 @@ modelo(L) :- % * significa uma regra
     nth1(Jmaio, L, (_,_,maio,_,_,_)),
     Iazul < Jmaio, % azul está antes de maio
 
+    ( %Will está ao lado do menino que gosta de problemas de lógica
+         (N1 = will, J2 = logica);
+         (N2 = will, (J1 = logica ; J3 = logica));
+         (N3 = will, (J2 = logica ; J4 = logica));
+         (N4 = will, (J3 = logica ; J5 = logica));
+         (N5 = will, J4 = logica)
+    ),
+
+    ( %Quem gosta de suco de uva gosta de problemas de lógica
+         (S1 = uva, J1 = logica);
+         (S2 = uva, J2 = logica);
+         (S3 = uva, J3 = logica);
+         (S4 = uva, J4 = logica);
+         (S5 = uva, J5 = logica)
+    ),
+
+    %O garoto que gosta do jogo da forca está ao lado do que gosta do 3 ou mais
+    (
+          (J1 = forca, J2 = tresoumais);
+          (J2 = forca, (J1 = tresoumais ; J3 = tresoumais));
+          (J3 = forca, (J2 = tresoumais ; J4 = tresoumais));
+          (J4 = forca, (J3 = tresoumais ; J5 = tresoumais));
+          (J5 = forca, J4 = tresoumais)
+    ),
+
+    %O menino que gosta de suco de uva está em algum lugar à direita do garoto da mochila azul
+    (
+          (M1 = azul, (S2 = uva ; S3 = uva ; S4 = uva ; S5 = uva));
+          (M2 = azul, (S3 = uva ; S4 = uva ; S5 = uva));
+          (M3 = azul, (S4 = uva ; S5 = uva));
+          (M4 = azul, S5 = uva)
+    ),
+
+    %Em uma das pontas está o menino que adora jogar cubo vermelho
+    (J1 = cubovermelho ; J5 = cubovermelho),
+   
+    %Quem gosta do jogo da forca está ao lado do dono da mochila vermelha
+    (
+          (J1 = forca, M2 = vermelho); 
+          (J2 = forca, (M1 = vermelho; M3 = vermelho));
+          (J3 = forca, (M2 = vermelho; M4 = vermelho));
+          (J4 = forca, (M3 = vermelho; M5 = vermelho));
+          (J5 = forca, M4 = vermelho)
+    ),
+
+    %O menino que nasceu em janeiro está ao lado de quem nasceu em setembro
+    nth1(Ijan, L, (_,_,janeiro,_,_,_)), %acha janeiro. nth simboliza enésimo valor
+    nth1(Iset, L, (_,_,setembro,_,_,_)),  %acha setembro
+    (
+          Ijan is Iset - 1 ; %à esquerda
+          Ijan is Iset + 1 %à direita
+    ),
+
+    %Quem gosta de suco de uva está exatamente à esquerda de quem gosta de português
+     nth1(Iuva, L, (_,_,_,_,_,uva)),
+     nth1(Jpor, L, (_,_,_,_,portugues,_)),
+     Jpor is Iuva + 1, %português está à direita de uva
+
+    %O menino que gosta de matemática nasceu em dezembro
+    nth1(Lmat, L, (_, _, dezembro, _, matematica,_)), %na mesma linha 
+
+    %Quem curte problemas de lógica está ao lado do menino da mochila amarela
+    nth1(Camarelo, L, (amarelo, _, _, _, _, _)),
+    nth1(Clogica, L, (_,_, _, logica, _, _)),
+    (
+           Camarelo is Clogica + 1 ;
+           Camarelo is Clogica - 1
+    ),
+
+    %O dono da mochila azul nasceu em janeiro
+    nth1(Mazul, L, (azul, _, janeiro, _, _, _)),
+
+    %O garoto que nasceu em setembro está ao lado de quem gosta de jogar cubo vermelho
+    nth1(Msetembro, L, (_, _, setembro, _, _, _)),
+    nth1(Gcubo, L, (_, _, _, cubovermelho, _, _)),
+    ( 
+           Msetembro is Gcubo + 1;
+           Msetembro is Gcubo - 1
+    ),
+   
+    %Quem gosta de matemática gosta também de suco de maracujá
+    nth1(Lmat, L, (_, _, _, _, matematica, maracuja)),
+
     nth1(3, L, (_, _, _, _, _, morango)), % *morango está na terceira posição
     nth1(1, L, (_, _, _, _, _, limao)), % *limão está na primeira posição
-    nth1(5, L, (_, lenin, _, _, _, _)). % *lenin está na quinta posição
+    nth1(5, L, (_, lenin, _, _, _, _)), % *lenin está na quinta posição
+    nth1(3, L, (_, _, _, forca, _, _)). %na terceira posição está quem gosta de forca
 
 
 %main
