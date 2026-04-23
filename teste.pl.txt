@@ -1,0 +1,17 @@
+mochila(verde).
+mochila(azul).
+mochila(vermelho).
+mochila(amarelo).
+mochila(branco).
+nome(otavio).
+nome(will).
+nome(denis).
+nome(joao).
+nome(lenin).
+
+main :-
+    mochila(X),
+    nome(Y),
+    write([X,Y]), nl,
+    fail.
+main.
