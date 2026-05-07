@@ -47,7 +47,7 @@ Grande parte do conteúdo consiste em:
 Veja também: [CONTRIBUTING.md](CONTRIBUTING.md) - orientações sobre contribuições (não aceito contribuição externa, mas fico feliz em discutir ideias pelo LinkedIn:[LinkedIn](https://www.linkedin.com/in/maria-clara-viana-205422302)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# My hacking study diary:
+# Ethical-Hacking-Studies:
 
 **Notice:** all material here is for educational purposes and controlled environment experiments (virtual machines, labs).  
 Do not use these tools against networks or systems without explicit authorization.
