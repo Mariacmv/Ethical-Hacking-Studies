@@ -19,13 +19,21 @@ Documentar exercícios, laboratórios e conceitos estudados durante minha jornad
 
 ## Estrutura
 
-`ARP_Spoofing/
-Nmap/
-Linux/
-Python/
-Malware_Analysis/
-Wireshark/`
+- ARP_Spoofing
+- Alterador_MAC
+- Assembler
+- Assistente IA para estudos
+- Malware_analysis
+- Scanner_de_rede
 
+## Tecnologias
+
+- Python
+- Linux
+- VirtualBox
+- Wireshark
+- Assembly
+  
 ## Observações
 
 Grande parte do conteúdo consiste em:
@@ -36,7 +44,7 @@ Grande parte do conteúdo consiste em:
 - Scripts de estudo
 - Resumos técnicos
 
-Veja também: [CONTRIBUTING.md](CONTRIBUTING.md) - orientações sobre contribuições (não aceito contribuição externa, mas fico feliz em discutir ideias pelo LinkedIn: www.linkedin.com/in/maria-clara-viana-205422302
+Veja também: [CONTRIBUTING.md](CONTRIBUTING.md) - orientações sobre contribuições (não aceito contribuição externa, mas fico feliz em discutir ideias pelo LinkedIn:[LinkedIn](https://www.linkedin.com/in/maria-clara-viana-205422302)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # My hacking study diary:
@@ -44,7 +52,7 @@ Veja também: [CONTRIBUTING.md](CONTRIBUTING.md) - orientações sobre contribui
 **Notice:** all material here is for educational purposes and controlled environment experiments (virtual machines, labs).  
 Do not use these tools against networks or systems without explicit authorization.
 
-Project to document exercises and concepts i've been studying in labs.
+Project to document exercises and concepts I've been studying in labs.
 
 ## Contents
 
@@ -54,4 +62,21 @@ Project to document exercises and concepts i've been studying in labs.
 - Malware analysis
 - Technical notes and walkthroughs
 
-See also: [CONTRIBUTING.md](CONTRIBUTING.md) - contribuition guidelines (external contribuitons are not accepted, but i'm happy to discuss ideas on LinkedIn:  www.linkedin.com/in/maria-clara-viana-205422302).
+## Structure
+
+- ARP_Spoofing
+- Alterador_MAC
+- Assembler
+- Assistente IA para estudos
+- Malware_analysis
+- Scanner_de_rede
+
+## Technologies
+
+- Python
+- Linux
+- VirtualBox
+- Wireshark
+- Assembly
+
+See also: [CONTRIBUTING.md](CONTRIBUTING.md) - contribuition guidelines (external contributions are not accepted, but i'm happy to discuss ideas on LinkedIn:  [LinkedIn](https://www.linkedin.com/in/maria-clara-viana-205422302)).
