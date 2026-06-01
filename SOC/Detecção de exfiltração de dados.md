@@ -90,7 +90,7 @@ Procurando apenas por requests via POST:
 `http && http.request.method=="POST"`
 
 Também identifico a URI que envia dados para um servidor público: 
-![imagem]([/imagens/image.png](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/084e47c6aaf578584c01fa1a592e6c113831879e/SOC/imagens/image.png))
+![imagem](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/084e47c6aaf578584c01fa1a592e6c113831879e/SOC/imagens/image.png)
 Investigando os resultados, é possível identificar as requisições HTTP destinadas aos seguintes hosts:
 
 `http://metrics.dev/v1/sync/upload
