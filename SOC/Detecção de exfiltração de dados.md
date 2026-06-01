@@ -90,7 +90,7 @@ Procurando apenas por requests via POST:
 `http && http.request.method=="POST"`
 
 Também identifico a URI que envia dados para um servidor público: 
-![imagem](SOC/imagens/image.png)
+![imagem](/imagens/image.png)
 Investigando os resultados, é possível identificar as requisições HTTP destinadas aos seguintes hosts:
 
 `http://metrics.dev/v1/sync/upload
