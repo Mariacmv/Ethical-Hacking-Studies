@@ -113,7 +113,7 @@ Além disso, o conteúdo inclui evidências explícitas de atividade suspeita, c
 Host: api.cloudsync-services.com
 Content-Length: 654
 
-# Internal Access Credentials - Finance Department
+Internal Access Credentials - Finance Department
 Username: finance_admin
 Password: F!n@nc3#2025
 VPN Gateway: vpn.corpnet.local
@@ -134,7 +134,7 @@ THM{http_raw_3xf1ltr4t10n_succ3ss}
 File Hashes:
   secret.txt: 9c8f3e2b7a1d4e5f6c7b8a9d0e1f2a3b
   backup.tar.gz: 7f6e5d4c3b2a1908a7b6c5d4e3f2a1b0
-# End of file`
+End of file`
 
 # Análise de transferência por ICMP
 ICMP é um protocolo de rede utilizado para relatório de rede e controle. ICMP frequentemente é menos inspecionado que TCP/HTTP, o que pode ser explorado para tunelização e exfiltração.
