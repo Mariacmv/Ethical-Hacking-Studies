@@ -60,7 +60,7 @@ Indicações de um envenenamento DNS: múltiplas respostas a uma única solicita
 Utilizando o wireshark:
 
 Começando a investigação, posso investigar requisições e respostas legítimas com: dns.flags.response == 1 && ip.src == 8.8.8.8, em que o endereço IP 8.8.8.8 indica o servidor da google. As respostas são todas legítimas:
-![imagem_dns](SOC/imagens/imagem_dns.png)
+![SOC/imagens/imagem_dns](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/main/SOC/imagens/imagem_dns.png)
 
 Pesquisando por respostas que não vieram desse mesmo endereço com dns.flags.response == 1 && ip.src != 8.8.8.8, consigo identificar o endereço IP 192.168.10.55. Incluindo um domínio específico para conferir a atividade, não há nada alarmante: dns.flags.response == 1 && ip.src == 8.8.8.8 && dns.qry.name == "corp-login.acme-corp.local", o que indica a falsificação do endereço DNS já que foi redirecionado a outro endereço IP que não 8.8.8.8:
-![imagem_flags](SOC/imagens/imagem_flags.png)
+![SOC/imagens/imagem_flags.png](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/main/SOC/imagens/imagem_flags.png)
