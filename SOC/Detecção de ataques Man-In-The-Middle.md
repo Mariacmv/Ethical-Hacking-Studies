@@ -53,3 +53,14 @@ Quantos pacotes falsificados foram observados?
 `arp.duplicate-address-detected || arp.duplicate-address-frame`
 
 # Análise Spoofing DNS
+Trata-se de falsificação do endereço IP associado a um domínio. Um agente de ameaça se coloca entre as requisições, identifica uma requisição de um site que ele falsificou e envia uma resposta no lugar do servidor oficial de tal site, enviando um site idêntico ao solicitado, porém associado ao ip do criminoso. Quando a vítima digita informações sensíveis, quem recebe é o servidor do atacante.
+
+Indicações de um envenenamento DNS: múltiplas respostas a uma única solicitação; resposta vinda de um servidor com IP desconhecido (diferente de 8.8.8.8 ou o especificado); valores baixos de TTLs de pacotes; resposta DNS recebida sem que uma solicitação tenha sido feita. 
+
+Utilizando o wireshark:
+
+Começando a investigação, posso investigar requisições e respostas legítimas com: dns.flags.response == 1 && ip.src == 8.8.8.8, em que o endereço IP 8.8.8.8 indica o servidor da google. As respostas são todas legítimas:
+[imagem_dns]
+
+Pesquisando por respostas que não vieram desse mesmo endereço com dns.flags.response == 1 && ip.src != 8.8.8.8, consigo identificar o endereço IP 192.168.10.55. Incluindo um domínio específico para conferir a atividade, não há nada alarmante: dns.flags.response == 1 && ip.src == 8.8.8.8 && dns.qry.name == "corp-login.acme-corp.local", o que indica a falsificação do endereço DNS já que foi redirecionado a outro endereço IP que não 8.8.8.8:
+[imagem_flags]
