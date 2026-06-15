@@ -64,3 +64,18 @@ Começando a investigação, posso investigar requisições e respostas legítim
 
 Pesquisando por respostas que não vieram desse mesmo endereço com dns.flags.response == 1 && ip.src != 8.8.8.8, consigo identificar o endereço IP 192.168.10.55. Incluindo um domínio específico para conferir a atividade, não há nada alarmante: dns.flags.response == 1 && ip.src == 8.8.8.8 && dns.qry.name == "corp-login.acme-corp.local", o que indica a falsificação do endereço DNS já que foi redirecionado a outro endereço IP que não 8.8.8.8:
 ![SOC/imagens/imagem_flags.png](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/main/SOC/imagens/imagem_flags.png)
+
+# Análise SSL Striping
+É um tipo de ataque em que o agente de ameaça intercepta um tráfego HTTPS e envia as respostas em HTTP, fazendo com que a vítima exponha seus dados já que não há criptografia.
+
+Indicadores de SSL Stripping: requisições utilizando HTTPS (TLS) e respostas em HTTP; redirecionamentos constantes de HTTPS para HTTP; falha no handshake TLS/SSL.
+
+Utilizando o wireshark:
+
+Visualizando pacotes TLS com: tls || ssl é possível ver falhas no three way handshake quando os segmentos não são capturados:
+![SOC/imagens/imagem_TLS]()
+
+Filtrando o tráfego TLS para identificar o domínio utilizado: tls.handshake.type == 1 && tls.handshake.extensions_server_name == "corp-login.acme-corp.local”.  As requisições aparecem indicando a não captura dos segmentos:
+```
+1871	1501537.573206	192.168.10.15	93.184.216.34	TLSv1.2	148	[TCP Previous segment not captured] , Client Hello (SNI=corp-login.acme-corp.local)
+```
