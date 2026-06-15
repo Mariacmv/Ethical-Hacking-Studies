@@ -73,7 +73,7 @@ Indicadores de SSL Stripping: requisições utilizando HTTPS (TLS) e respostas e
 Utilizando o wireshark:
 
 Visualizando pacotes TLS com: tls || ssl é possível ver falhas no three way handshake quando os segmentos não são capturados:
-![SOC/imagens/imagem_TLS]()
+![SOC/imagens/imagem_TLS](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/main/SOC/imagens/imagem_TLS.png)
 
 Filtrando o tráfego TLS para identificar o domínio utilizado: tls.handshake.type == 1 && tls.handshake.extensions_server_name == "corp-login.acme-corp.local”.  As requisições aparecem indicando a não captura dos segmentos:
 ```
