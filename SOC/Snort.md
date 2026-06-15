@@ -16,6 +16,7 @@ Diferença entre Intrusion Detection System (IDS) e Intrusion Prevention System 
 
 As principais técnicas de prevenção com IDS e IPS são: baseado em assinatura (trata-se de identificar atividades com base em comportamentos específicos, padrões que concordam com regras preestabelecidas), baseado em comportamento (trata-se de identificar comportamentos anômalos não identificados previamente, contribuindo para a lista de regras) e baseado em políticas (identificação baseado em configurações e políticas).
 A documentação do snort:![link](https://www.snort.org/)
+
 É um NIDS/NIPS, ou seja, baseado em rede que pode analisar tráfego ao vivo e gerar alertas, detectar ataques, gerar log de pacotes, analisar protocolos, suporte para módulos e plugins. Pode operar em três modos:
 
 1. sniffer: monitora e gerar logs de tráfego ao vivo.
@@ -36,6 +37,7 @@ ubuntu@ip-10-64-181-40:~$ snort -V
            Using PCRE version: 8.39 2016-06-14
            Using ZLIB version: 1.2.11
 ```
+
 Depois, confiro as configurações utilizando as flags -c que identifica o arquivo de configuração e -T que o testa.
 ```
 ubuntu@ip-10-64-181-40:/etc/snort$ ls
@@ -49,7 +51,7 @@ Running in Test mode
 Snort successfully validated the configuration!
 Snort exiting
 ```
-(Posso prevenir a saída do banner com o parâmetro -q)
+<mark>Posso prevenir a saída do banner com o parâmetro -q</mark>
 > O teste previne uma execução falha.
 
 ###Rodando no modo sniffer (farejador)
@@ -69,11 +71,14 @@ TCP TTL:127 TOS:0x0 ID:32028 IpLen:20 DgmLen:70 DF
 ***AP*** Seq: 0x740A139B  Ack: 0xE9CF7638  Win: 0x12E9  TcpLen: 32
 TCP Options (3) => NOP NOP TS: 3908850729 2377651180 
 ```
-(Posso concluir que o tráfego vem de 10.64.78.188 na porta TCP 58992 e 172.31.64.152 na porta TCP/UDP 9092 que indica serviço KAFKA - mensagens de streaming Também há tráfego HTTP interno - 10.64.181.40:80 com a flag: ***AP*** (ACK + PUSH) o que indica que o usuário está enviando dados na sessão TCP)
+<mark>Posso concluir que o tráfego vem de 10.64.78.188 na porta TCP 58992 e 172.31.64.152 na porta TCP/UDP 9092 que indica serviço KAFKA - mensagens de streaming Também há tráfego HTTP interno - 10.64.181.40:80 com a flag: ***AP*** (ACK + PUSH) o que indica que o usuário está enviando dados na sessão TCP</mark>
+
 Encontrei também a ordem de aplicação das regras:
 ```Rule application order: activation->dynamic->pass->drop->sdrop->reject->alert->log```
+
 De 1091 pacotes, 967 pacotes foram analisados:
-```Packet I/O Totals:
+```
+Packet I/O Totals:
    Received:         1091
    Analyzed:          967 ( 88.634%)
     Dropped:            0 (  0.000%)
@@ -83,8 +88,10 @@ Outstanding:          124 ( 11.366%)
 #todos por IPV4
 IP4:          967 (100.000%)
 #a maioria por TCP
-TCP:          790 ( 81.696%)```
-(Identifico os servicos: internal-k8s-badrserv-badrserv-8675e7e1fd-425959980 e eu-west-1.elb.amazonaws.com que indicam uma possível consulta DNS - 10.64.0.2:53 a um serviço kubernetes via AWS-ELB na região: eu-west-1)
+TCP:          790 ( 81.696%)
+```
+<mark>Identifico os servicos: internal-k8s-badrserv-badrserv-8675e7e1fd-425959980 e eu-west-1.elb.amazonaws.com que indicam uma possível consulta DNS - 10.64.0.2:53 a um serviço kubernetes via AWS-ELB na região: eu-west-1</mark>
+
 Analisando também o cabeçalho do pacote com -e (combinando o conteúdo do payload -d e header -e):
 ```
 03/31-12:22:07.076219 0A:FF:C9:24:FF:F9 -> 0A:FF:F4:9A:43:41 type:0x800 len:0x62
@@ -92,8 +99,9 @@ Analisando também o cabeçalho do pacote com -e (combinando o conteúdo do payl
 ***AP*** Seq: 0x74175BCB  Ack: 0xF8FFB916  Win: 0x12E9  TcpLen: 32
 TCP Options (3) => NOP NOP TS: 3910673448 2379473908 
 82 8A 40 55 2B 6C B8 55 2B 6C 40 55 2B 6D 41 54  ..@U+l.U+l@U+mAT
-82 8A EC 21 D3 32 14 21 D3 32 EC 21 D3 33 ED 20  ...!.2.!.2.!.3.```
-(...!.2.!.2.!.3. ..@U+l.U+l@U+mAT indicam conteúdo binário Também há tráfego local por causa da comunicação via MAC: 0A:FF:C9:24:FF:F9 -> 0A:FF:F4:9A:43:41)
+82 8A EC 21 D3 32 14 21 D3 32 EC 21 D3 33 ED 20  ...!.2.!.2.!.3.
+```
+<mark>...!.2.!.2.!.3. ..@U+l.U+l@U+mAT indicam conteúdo binário Também há tráfego local por causa da comunicação via MAC: 0A:FF:C9:24:FF:F9 -> 0A:FF:F4:9A:43:41</mark>
 
 Analisando com -X:
 ```
@@ -107,10 +115,10 @@ TCP Options (5) => MSS: 8961 SackOK TS: 2198084435 0 NOP WS: 7
 0x0030: F5 07 AD 07 00 00 02 04 23 01 04 02 08 0A 83 04  ........#.......
 0x0040: 1B 53 00 00 00 00 01 03 03 07                    .S........
 ```
-(Identifico uma conexão SYN através de: ******S* e Ack: 0x0, ou seja, a conexão ainda não foi estabelecida. 
+<mark>Identifico uma conexão SYN através de: ******S* e Ack: 0x0, ou seja, a conexão ainda não foi estabelecida. 
 host 10.64.181.40 iniciou conexão - destino 172.31.65.81 - porta 443 (HTTPS) - 
 primeiro pacote do handshake TCP (SYN) - 
-conexão provavelmente com serviço HTTPS dentro de infraestrutura cloud)
+conexão provavelmente com serviço HTTPS dentro de infraestrutura cloud</mark>
 
 #### Conclusão:
 
@@ -121,5 +129,3 @@ conexão provavelmente com serviço HTTPS dentro de infraestrutura cloud)
 - Foi detectada a**inicialização de conexões HTTPS (porta 443)** pelo host monitorado, indicando comunicação com serviços externos ou cloud.
 - O tráfego capturado inclui**dados binários no payload**, possivelmente relacionados a protocolos de aplicação ou dados criptografados.
 - Nenhuma perda de pacotes foi observada durante a captura.
-
-<mark>teste</mark>
