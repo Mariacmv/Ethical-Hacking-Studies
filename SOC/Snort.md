@@ -16,7 +16,7 @@ Diferença entre Intrusion Detection System (IDS) e Intrusion Prevention System 
     - Host-based Intrusion Prevention System (HIPS): é similar ao HIDS, com a diferença de que quando uma assinatura é identificada, é capaz de agir contra eliminando processos anômalos.
 
 As principais técnicas de prevenção com IDS e IPS são: baseado em assinatura (trata-se de identificar atividades com base em comportamentos específicos, padrões que concordam com regras preestabelecidas), baseado em comportamento (trata-se de identificar comportamentos anômalos não identificados previamente, contribuindo para a lista de regras) e baseado em políticas (identificação baseado em configurações e políticas).
-A documentação do snort:![link](https://www.snort.org/)
+A documentação do snort: (https://www.snort.org/)
 
 É um NIDS/NIPS, ou seja, baseado em rede que pode analisar tráfego ao vivo e gerar alertas, detectar ataques, gerar log de pacotes, analisar protocolos, suporte para módulos e plugins. Pode operar em três modos:
 
