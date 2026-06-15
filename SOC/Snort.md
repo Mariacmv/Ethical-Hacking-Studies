@@ -3,7 +3,8 @@ link para a sala: https://tryhackme.com/room/snort
 É um NIDS/NIPS, ou seja, um Sistema de Detecção e Prevenção de intrusão de rede. Arquivo de configuração base do snort:
 
 Diferença entre Intrusion Detection System (IDS) e Intrusion Prevention System (IPS): 
-![arquivo_nota]()
+
+![arquivo_nota](https://github.com/Mariacmv/Ethical-Hacking-Studies/blob/main/SOC/imagens/configuracaoSnort.txt)
 - IDS é um sistema que monitora e detecta um sistema para identificar comportamentos anormais e violações de políticas que são determinados por uma lista de alertas.
     - Network Intrusion Detection System (NIDS): é um sistema de detecção baseado na rede, ou seja, monitora a rede como um todo.
     - Host-based Intrusion Detection System (HIDS): é um sistema de detecção baseado em cada host de uma rede.
