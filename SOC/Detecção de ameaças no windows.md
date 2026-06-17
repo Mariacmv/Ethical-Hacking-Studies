@@ -223,7 +223,7 @@ Após isso, houve um evento 4611 que indica que um processo de logon confiável 
 Então, com acesso ao sistema, o atacante tentou enumerar os grupos de segurança disponíveis no sistema, no caso, o grupo “Administrators”:
 <details>
   <summary>log</summary>
-  	```
+	
 	A security-enabled local group membership was enumerated.
 
 	Subject:
@@ -240,31 +240,32 @@ Então, com acesso ao sistema, o atacante tentou enumerar os grupos de seguranç
 	Process Information:
 	Process ID:		0x4d0
 	Process Name:		C:\Windows\System32\svchost.exe
-	```
+
 </details>
 
 Criou um novo usuário normal chamado “support” (ID 4728 e ID 4720) e a ativou (ID 4722). Utilizou a conta Administrador para alterar a senha da conta support de forma que nunca expire 0x210, ou seja, que seja uma conta normal do windows. Ele alterou a flag “Old UAC Value” de 0x15 para 0x10 que remove as flags temporárias de alteração 0x01 e 0x04 e adicionou o usuário ao grupo de usuários (ID 4732) e, por último, ao grupo de administradores: 
 <details>
   <summary>log</summary>
-  A member was added to a security-enabled local group.
+	
+  	A member was added to a security-enabled local group.
 
-Subject:
-Security ID:		THM-DFIR-VM-3\Administrator
-Account Name:		Administrator
-Account Domain:		THM-DFIR-VM-3
-Logon ID:		0x1CBC41
-
-Member:
-Security ID:		THM-DFIR-VM-3\support
-Account Name:		-
-
-Group:
-Security ID:		BUILTIN\Administrators
-Group Name:		Administrators
-Group Domain:		Builtin
-
-Additional Information:
-Privileges:		-
+	Subject:
+	Security ID:		THM-DFIR-VM-3\Administrator
+	Account Name:		Administrator
+	Account Domain:		THM-DFIR-VM-3
+	Logon ID:		0x1CBC41
+	
+	Member:
+	Security ID:		THM-DFIR-VM-3\support
+	Account Name:		-
+	
+	Group:
+	Security ID:		BUILTIN\Administrators
+	Group Name:		Administrators
+	Group Domain:		Builtin
+	
+	Additional Information:
+	Privileges:		-
 </details>
 
 > Investigando Sysmon logs
@@ -283,20 +284,21 @@ Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
 ```
 <details>
   <summary>log</summary>
-  A service was installed in the system.
+	
+  	A service was installed in the system.
 
-Subject:
-	Security ID:		THM-DFIR-VM-3\Administrator
-	Account Name:		Administrator
-	Account Domain:		THM-DFIR-VM-3
-	Logon ID:		0x3D349
-
-Service Information:
-	Service Name: 		GoogleUpdaterInternalService138.0.7156.0
-	Service File Name:	"C:\Program Files (x86)\Google\GoogleUpdater\138.0.7156.0\updater.exe" --system --windows-service --service=update-internal
-	Service Type: 		0x10
-	Service Start Type:	2
-	Service Account: 		LocalSystem
+	Subject:
+		Security ID:		THM-DFIR-VM-3\Administrator
+		Account Name:		Administrator
+		Account Domain:		THM-DFIR-VM-3
+		Logon ID:		0x3D349
+	
+	Service Information:
+		Service Name: 		GoogleUpdaterInternalService138.0.7156.0
+		Service File Name:	"C:\Program Files (x86)\Google\GoogleUpdater\138.0.7156.0\updater.exe" --system --windows-service --service=update-internal
+		Service Type: 		0x10
+		Service Start Type:	2
+		Service Account: 		LocalSystem
 </details>
 
 Com isso, posso utilizar o comando: PS C:\Users\Administrator> Get-CimInstance Win32_Process -Filter "ProcessId=4628" | Select-Object Name, ExecutablePath que retorna o nome e caminho do processo 4628 pai, no caso:
@@ -317,45 +319,48 @@ Por último a confirmação da adição do valor Basket, mais um mecanismo de pe
   <summary>logs</summary>
   <details>
     <summary>log1</summary>
-    File created:
-    <mark>RuleName: T1023</mark>
-    UtcTime: 2025-07-04 22:07:27.017
-    ProcessGuid: {c5d2b969-503c-6868-1e01-000000001c01}
-    ProcessId: 3192
-    <mark>Image: C:\Windows\system32\cmd.exe</mark>
-    <mark>TargetFilename: C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\odin.cmd</mark>
-    CreationUtcTime: 2025-07-04 22:07:27.017
-    User: THM-DFIR-VM-3\Administrator <- autor
+	  
+	    File created:
+	    <mark>RuleName: T1023</mark>
+	    UtcTime: 2025-07-04 22:07:27.017
+	    ProcessGuid: {c5d2b969-503c-6868-1e01-000000001c01}
+	    ProcessId: 3192
+	    <mark>Image: C:\Windows\system32\cmd.exe</mark>
+	    <mark>TargetFilename: C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\odin.cmd</mark>
+	    CreationUtcTime: 2025-07-04 22:07:27.017
+	    User: THM-DFIR-VM-3\Administrator <- autor
   </details>
   <details>
         <summary>log2</summary>
-    Process Create:
-    RuleName: -
-    UtcTime: 2025-07-04 22:08:48.349
-    ProcessGuid: {c5d2b969-50f0-6868-1f01-000000001c01}
-    ProcessId: 3540
-    Image: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-    FileVersion: 138.0.7204.97
-    Description: Google Chrome
-    Product: Google Chrome
-    Company: Google LLC
-    OriginalFileName: chrome.exe
-    <mark>CommandLine: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"</mark>
-    CurrentDirectory: C:\Program Files (x86)\Google\Chrome\Application\
-    <mark>User: THM-DFIR-VM-3\Administrator <- usuário utilizado</mark>
-    LogonGuid: {c5d2b969-45fb-6868-863d-040000000000}
-    LogonId: 0x43D86
-    TerminalSessionId: 2
-    IntegrityLevel: High
-    Hashes: MD5=DA34CEDC55D9BB00B3F372B4E16F5E8E,SHA256=CDCD09999ABA6E5583C053D1F1CBB86EEEA461C7865804563A2260BF00C32924,IMPHASH=57CF2C2757B740BE87F27FA95D3EC8C5
-    ParentProcessGuid: {c5d2b969-45ff-6868-8b00-000000001c01}
-    ParentProcessId: 4480
-    ParentImage: C:\Windows\explorer.exe
-    ParentCommandLine: C:\Windows\Explorer.EXE
-    ParentUser: THM-DFIR-VM-3\Administrator 
+	  
+	    Process Create:
+	    RuleName: -
+	    UtcTime: 2025-07-04 22:08:48.349
+	    ProcessGuid: {c5d2b969-50f0-6868-1f01-000000001c01}
+	    ProcessId: 3540
+	    Image: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+	    FileVersion: 138.0.7204.97
+	    Description: Google Chrome
+	    Product: Google Chrome
+	    Company: Google LLC
+	    OriginalFileName: chrome.exe
+	    <mark>CommandLine: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"</mark>
+	    CurrentDirectory: C:\Program Files (x86)\Google\Chrome\Application\
+	    <mark>User: THM-DFIR-VM-3\Administrator <- usuário utilizado</mark>
+	    LogonGuid: {c5d2b969-45fb-6868-863d-040000000000}
+	    LogonId: 0x43D86
+	    TerminalSessionId: 2
+	    IntegrityLevel: High
+	    Hashes: MD5=DA34CEDC55D9BB00B3F372B4E16F5E8E,SHA256=CDCD09999ABA6E5583C053D1F1CBB86EEEA461C7865804563A2260BF00C32924,IMPHASH=57CF2C2757B740BE87F27FA95D3EC8C5
+	    ParentProcessGuid: {c5d2b969-45ff-6868-8b00-000000001c01}
+	    ParentProcessId: 4480
+	    ParentImage: C:\Windows\explorer.exe
+	    ParentCommandLine: C:\Windows\Explorer.EXE
+	    ParentUser: THM-DFIR-VM-3\Administrator 
   </details>
   <details>
         <summary>log3</summary>
+	  
     CommandLine: C:\Windows\System32\Speech_OneCore\Common\SpeechRuntime.exe -Embedding 
     ParentCommandLine: C:\Windows\system32\svchost.exe -k DcomLaunch -p
      
@@ -368,12 +373,14 @@ Por último a confirmação da adição do valor Basket, mais um mecanismo de pe
   </details>
   <details>
     <summary>log4</summary>
+	  
     HKCU\Software\Microsoft\Windows\CurrentVersion\Run
 
     Basket = C:\Users\Public\kitten.exe
   </details>
   <details>
     <summary>log5</summary>
+	  
     Registry value set:
     <mark>RuleName: T1060,RunKey -> detecção de chave de inicialização no registro do windows</mark>
     EventType: SetValue
