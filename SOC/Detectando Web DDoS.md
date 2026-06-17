@@ -12,6 +12,7 @@ Esses ataques podem causar diversos problemas a um dono de negócio já que muit
 <mark>access.log - arquivo</mark>
 
 Observando as requisições feitas no arquivo access.log, noto 93 requisições repetidas à página de login:
+
 <details>
   <summary>/login</summary>
 ubuntu@tryhackme:~/Desktop$ grep "/login" access.log
@@ -109,7 +110,9 @@ ubuntu@tryhackme:~/Desktop$ grep "/login" access.log
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 503 267 "-" "curl/7.88.1"
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 503 267 "-" "curl/7.88.1"
 </details>
+
 Muitas requisições com curl (até mesmo Python-urllib):
+
 <details>
   <summary>Curl</summary>
   ubuntu@tryhackme:~/Desktop$ grep "curl" access.log
@@ -206,15 +209,21 @@ Muitas requisições com curl (até mesmo Python-urllib):
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 503 267 "-" "curl/7.88.1"
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 503 267 "-" "curl/7.88.1"
 </details>
+
 Observo 3 endereços IP utilizados: 192.168.1.5, 192.168.1.10, 203.12.23.195. Os dois primeiros pertencem à faixa de endereços IP privados (192.168.0.0/16), normalmente utilizada em redes locais (LAN). Já o endereço 203.12.23.195 é um IP público, roteável na Internet e potencialmente associado a um dispositivo ou servidor acessível externamente.
+
 Muitas requisições em um período muito curto de tempo:
+
 ```
 03.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 200 519 "-" "curl/7.88.1"
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 200 519 "-" "curl/7.88.1"
 203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 200 519 "-" "curl/7.88.1"
 ```
+
 (Todas feitas no mesmo segundo)
+
 Muitas requisições com erro de servidor 500-511, indicando que o servidor está com dificuldades o que pode indicar um possível ataque.
+
 <details>
   <summary>Código 503</summary>
   203.12.23.195 - - [31/Aug/2025:01:59:08 +0000] "GET /login HTTP/1.1" 503 267 "-" "curl/7.88.1"
@@ -247,6 +256,7 @@ Muitas requisições com erro de servidor 500-511, indicando que o servidor est�
 192.168.1.5 - - [31/Aug/2025:02:03:28 +0000] "GET /products/ HTTP/1.1" 503 248 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 192.168.1.10 - - [31/Aug/2025:02:03:56 +0000] "GET /products/access.log HTTP/1.1" 503 494 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:128.0)
 </details>
+
 Também é interessante investigar lógicas abusadoras em requisições nas próprias URL, como: **`GET /products?limit=999999`**
 
 Atacantes irão focar em páginas que vão explorar mais do servidor como páginas de login porque as requisições requerem buscas mais custosas no sistema, como banco de dados. Os diretórios mais focados são: /login, /search, /api, /register, /signup, /contact, /feedback, /cart, /checkout
