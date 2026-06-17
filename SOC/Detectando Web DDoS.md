@@ -8,7 +8,9 @@ Um ataque DDoS (Distributed Denial of Service) é utilizado para causar perda de
 - Abuso de validação de input defeituosa → explorar inputs com pouca validação.
 Esses ataques podem causar diversos problemas a um dono de negócio já que muitos dependem da disponibilidade total de um serviço. Os motivos para um atacante podem ir desde causar danos financeiros, com propósitos sociais, distração para que efetuem outros ataques, competição entre empresas até danos à reputação.
 > Investigando
+> 
 <mark>access.log - arquivo</mark>
+
 Observando as requisições feitas no arquivo access.log, noto 93 requisições repetidas à página de login:
 <details>
   <summary>/login</summary>
