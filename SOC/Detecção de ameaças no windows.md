@@ -3,8 +3,9 @@ O primeiro passo de um atacante é conseguir acesso a um dispositivo e, para iss
 Muitos dispositivos possuem o serviço RDP ativo e com segurança fraca e, portanto, provavelmente estão infectados. Com isso é muito interessante estar vigilante sobre a ativação e o uso desse serviço.
 
 > Investigando
+Investigando o arquivo "RDP-Security.evtx", começo filtrando por eventos de falha (4625) resultando em 1567 eventos, filtro o tipo do evento para 3 e 10 que significam logons remotos e investigo
+por endereços IP suspeitos. Além disso, procuro pelo nome do usuário logado (WIN-F89VT9ITR10$) através do ID 4624, no caso a conta utilizada para conseguir o primeiro acesso. 
 
-Investigando o arquivo “RDP-Security.evtx”, começo filtrando por eventos de falha (4625) resultando em 1567 eventos, filtro o tipo do evento para 3 e 10 que significam logons remotos e investigo por endereços IP suspeitos. Além disso, procuro pelo nome do usuário logado (WIN-F89VT9ITR10$) através do ID 4624, no caso a conta utilizada para conseguir o primeiro acesso.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Muitas extensões estão passando a serem bloqueadas porque atores de ameaça estão as utilizando para mascarar programas binários ou links para arquivos (LNK), como: 
 <details>
