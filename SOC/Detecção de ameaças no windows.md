@@ -223,22 +223,24 @@ Após isso, houve um evento 4611 que indica que um processo de logon confiável 
 Então, com acesso ao sistema, o atacante tentou enumerar os grupos de segurança disponíveis no sistema, no caso, o grupo “Administrators”:
 <details>
   <summary>log</summary>
-  A security-enabled local group membership was enumerated.
+  	```
+	A security-enabled local group membership was enumerated.
 
-Subject:
-Security ID:		SYSTEM
-Account Name:		THM-DFIR-VM-3$
-Account Domain:		WORKGROUP
-Logon ID:		0x3E7
-
-Group:
-Security ID:		BUILTIN\Administrators
-Group Name:		Administrators
-Group Domain:		Builtin
-
-Process Information:
-Process ID:		0x4d0
-Process Name:		C:\Windows\System32\svchost.exe
+	Subject:
+	Security ID:		SYSTEM
+	Account Name:		THM-DFIR-VM-3$
+	Account Domain:		WORKGROUP
+	Logon ID:		0x3E7
+	
+	Group:
+	Security ID:		BUILTIN\Administrators
+	Group Name:		Administrators
+	Group Domain:		Builtin
+	
+	Process Information:
+	Process ID:		0x4d0
+	Process Name:		C:\Windows\System32\svchost.exe
+	```
 </details>
 
 Criou um novo usuário normal chamado “support” (ID 4728 e ID 4720) e a ativou (ID 4722). Utilizou a conta Administrador para alterar a senha da conta support de forma que nunca expire 0x210, ou seja, que seja uma conta normal do windows. Ele alterou a flag “Old UAC Value” de 0x15 para 0x10 que remove as flags temporárias de alteração 0x01 e 0x04 e adicionou o usuário ao grupo de usuários (ID 4732) e, por último, ao grupo de administradores: 
