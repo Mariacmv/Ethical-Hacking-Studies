@@ -181,7 +181,9 @@ Com isso, é interessante utilizar a ferramenta ausearch para identificar o comp
 
 > Investigando
 
-Uma equipe de segurança recebeu a solicitação de analisar os registros de autenticação de um servidor Linux após atividades administrativas terem sido realizadas remotamente. Como parte da investigação, é necessário reconstruir o histórico de acessos do usuário `ubuntu`, identificando quando ocorreu sua primeira conexão ao servidor por meio do protocolo SSH e verificando qual método de autenticação foi utilizado. A análise dos logs permitirá determinar se o acesso foi realizado por senha ou por chaves SSH, fornecendo uma visão mais clara sobre os mecanismos de autenticação empregados no ambiente.
+Uma equipe de segurança recebeu a solicitação de analisar os registros de autenticação de um servidor Linux após atividades administrativas terem sido realizadas remotamente. Como parte da investigação, é necessário reconstruir o histórico de acessos do usuário `ubuntu`, identificando quando ocorreu sua primeira conexão ao servidor por meio do protocolo SSH e verificando qual método de autenticação foi utilizado. 
+
+A análise dos logs permitirá determinar se o acesso foi realizado por senha ou por chaves SSH, fornecendo uma visão mais clara sobre os mecanismos de autenticação empregados no ambiente.
 
 Inicio recuperando eventos sshd com grep “sshd” e descubro que o usuário ubuntu realizou a primeira conexão em 20 de outubro de 2024 às 8:28 utilizando chaves ssh ao invés de senha:
 
