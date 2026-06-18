@@ -388,7 +388,11 @@ O que indica **Atividade pós-exploração (post-exploitation).** Possíveis obj
 - ocultação de rastros
 - manutenção de acesso root
 
-A análise dos logs confirma que o ambiente foi alvo de ataques automatizados de força bruta via SSH, seguidos por comprometimento efetivo de credenciais. Foi identificado acesso não autorizado à conta root a partir do IP externo `91.224.92.79`, caracterizando comprometimento crítico do sistema. Adicionalmente, o usuário `ubuntu`, que originalmente utilizava autenticação por chave SSH, passou a ser acessado via senha a partir do IP `10.64.91.229`, indicando possível vazamento ou reutilização de credenciais. Após os acessos indevidos, foram observadas atividades típicas de pós-exploração, incluindo elevação de privilégios, modificação de arquivos de configuração e tentativas de manipulação de logs, sugerindo que o atacante buscou manter persistência e ocultar evidências.
+A análise dos logs confirma que o ambiente foi alvo de ataques automatizados de força bruta via SSH, seguidos por comprometido efetivo de credenciais. Foi identificado acesso não autorizado à
+conta root a partir do IP externo `91.24.92.79`, caracterizando comprometimento crítico do sistema. Adicionalmente, o usuário `ubuntu`, que originalmente utilizava autenticação por chave SSH,
+passou a ser acessado via senha a partir do IP `10.64.91.229`, indicando possível vazamento ou reutilização de credenciais. Após os acessos indevidos, foram observados atividades típicas de pós-
+exploração, incluindo elevação de priviliégios, modificação de arquivos de configuração e tentativas de manipulação de logs, sugerindo que o atacante buscou manter persistência e ocultar evidências.
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Após a invasão o usuário provavelmente começou sua exploração pelo sistema. Normalmente o processo de obter acesso a um sistema é feito por bots e depois um humano realiza o trabalho de exploração. Os comandos mais comuns costumam ser:
 <table border=2>
