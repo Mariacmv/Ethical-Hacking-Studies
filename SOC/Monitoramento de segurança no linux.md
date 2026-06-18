@@ -607,3 +607,32 @@ Para manter acesso, atacantes podem criar persistência em contas de usuários, 
 Sistemas linux podem ser como um ponto de acesso para outros dispositivos de uma organização e comprometer vários dispositivos de uma vez, agindo como um ransomware, explorando hypervisors.
 
 > Investigando
+
+Após obter acesso inicial ao sistema por meio de uma shell reversa, o invasor passou a executar atividades de reconhecimento para identificar possíveis caminhos para a elevação de privilégios. Como o acesso inicial foi realizado com um usuário de permissões limitadas, tornou-se necessário explorar vulnerabilidades ou configurações inadequadas para obter privilégios administrativos.
+
+Durante a investigação, foram analisados os registros de auditoria do sistema em busca de evidências das ações realizadas pelo atacante após a invasão. A análise concentrou-se na identificação de comandos de reconhecimento, buscas por arquivos sensíveis, exploração de vulnerabilidades locais, obtenção de acesso ao usuário **root** e, por fim, possíveis tentativas de coleta e exfiltração de dados.
+
+O objetivo desta etapa da investigação é reconstruir a sequência de eventos, identificar os mecanismos utilizados para a elevação de privilégios e avaliar o impacto do comprometimento do sistema.
+
+Primeiramente procuro pelo endereço IP que o atacante utilizou para encontrar a senha no arquivo de senhas. Para isso, utilizo o comando `sudo ausearch -i -if audit.log | grep "pass"` e recebo o registro:
+
+<details>
+  <summary>log</summary>
+    type=PROCTITLE msg=audit(09/23/25 14:53:00.821:2134) : proctitle=find . -name *pass* 
+    type=EXECVE msg=audit(09/23/25 14:53:00.821:2134) : argc=4 a0=find a1=. a2=-name a3=*pass* 
+    type=PROCTITLE msg=audit(09/23/25 14:53:10.724:2136) : ➡️proctitle=grep -iR pass . 
+    type=EXECVE msg=audit(09/23/25 14:53:10.724:2136) : argc=4 a0=grep a1=-iR a2=pass a3=. 
+</details>
+
+No log, descubro que o comando utilizado foi `grep -iR pass .` já que grep inspeciona dentro dos arquivos ao invés do find que procura por arquivos. 
+
+Investigando o arquivo .env escondido na pasta /opt/trypingme, encontro a senha do root para a aplicação:
+
+```
+ubuntu@thm-vm:/opt/trypingme$ cat .env.local
+# Run the app from this user
+# USER=root
+➡️# PASSWORD=nGql1pQkGa
+
+# UPD: The file is no longer used, commented it for now
+```
