@@ -204,21 +204,24 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     <summary>logs 21/08/2026</summary>
     <details>
       <summary>log1</summary>
-      2025-08-21T14:27:40.428905+00:00 tryhackme-2404 passwd[584]: password for 'ubuntu' changed by 'root'
-      2025-08-21T14:27:40.444072+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event0 (Power Button)
-      2025-08-21T14:27:40.444077+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event1 (Sleep Button)
-      2025-08-21T14:27:40.444083+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event2 (AT Translated Set 2 keyboard)
+      
+        2025-08-21T14:27:40.428905+00:00 tryhackme-2404 passwd[584]: password for 'ubuntu' changed by 'root'
+        2025-08-21T14:27:40.444072+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event0 (Power Button)
+        2025-08-21T14:27:40.444077+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event1 (Sleep Button)
+        2025-08-21T14:27:40.444083+00:00 tryhackme-2404 systemd-logind[623]: Watching system buttons on /dev/input/event2 (AT Translated Set 2 keyboard)
     </details>
     <details>
       <summary>log2</summary>
+      
       2025-08-21T14:27:40.444095+00:00 tryhackme-2404 systemd-logind[623]: ➡️New seat seat0.
-    2025-08-21T14:27:40.648420+00:00 tryhackme-2404 polkitd[775]: ➡️Loading rules from directory /etc/polkit-1/rules.d
-    2025-08-21T14:27:40.648537+00:00 tryhackme-2404 polkitd[775]: ➡️Loading rules from directory /usr/share/polkit-1/rules.d
-    2025-08-21T14:27:40.651667+00:00 tryhackme-2404 polkitd[775]: ➡️Finished loading, compiling and executing 4 rules
-    2025-08-21T14:27:40.665688+00:00 tryhackme-2404 polkitd[775]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+      2025-08-21T14:27:40.648420+00:00 tryhackme-2404 polkitd[775]: ➡️Loading rules from directory /etc/polkit-1/rules.d
+      2025-08-21T14:27:40.648537+00:00 tryhackme-2404 polkitd[775]: ➡️Loading rules from directory /usr/share/polkit-1/rules.d
+      2025-08-21T14:27:40.651667+00:00 tryhackme-2404 polkitd[775]: ➡️Finished loading, compiling and executing 4 rules
+      2025-08-21T14:27:40.665688+00:00 tryhackme-2404 polkitd[775]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
     </details>
     <details>
       <summary>log3</summary>
+      
       2025-08-21T14:31:42.932255+00:00 tryhackme-2404 sshd[1012]: ➡️Server listening on :: port 22.
       2025-08-21T14:31:44.814918+00:00 tryhackme-2404 sshd[1013]: ➡️Accepted publickey for ubuntu from 10.14.105.255 port 18442 ssh2: RSA SHA256:oj8xLijWySiv2Jzh/N9DI1upm+hMm9zZJ6hw6LMDEHc
       2025-08-21T14:31:44.818889+00:00 tryhackme-2404 sshd[1013]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
@@ -227,6 +230,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
     <details>
       <summary>log4</summary>
+      
       2025-08-21T14:31:50.645675+00:00 tryhackme-2404 sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu ; USER=root ; ➡️COMMAND=/usr/bin/su
       2025-08-21T14:31:50.646777+00:00 tryhackme-2404 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by ubuntu(uid=1000)
       2025-08-21T14:31:50.656103+00:00 tryhackme-2404 su[1159]: (to root) root on pts/1
@@ -234,6 +238,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
     <details>
       <summary>log5</summary>
+      
       2025-08-21T14:41:04.729505+00:00 ➡️tryhackme-2404 sudo:     root : TTY=pts/1 ; ➡️PWD=/etc/logrotate.d ; USER=root ; COMMAND=/usr/bin/su
       2025-08-21T14:41:04.731425+00:00 tryhackme-2404 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by ubuntu(uid=0)
       2025-08-21T14:41:04.743288+00:00 tryhackme-2404 su[27111]: ➡️(to root) root on pts/2
@@ -243,6 +248,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
     <details>
       <summary>log6</summary>
+      
       2025-08-21T15:22:17.332863+00:00 ➡️thm-vm sshd[947]: ➡️Server listening on 0.0.0.0 port 22.
       2025-08-21T15:22:17.334287+00:00 thm-vm sshd[947]: Server listening on :: port 22.
       2025-08-21T15:22:17.752969+00:00 thm-vm sshd[948]: Accepted publickey for ubuntu from ➡️10.14.105.255 port 33903 ssh2: RSA SHA256:oj8xLijWySiv2Jzh/N9DI1upm+hMm9zZJ6hw6LMDEHc
@@ -253,6 +259,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
     <details>
       <summary>log7</summary>
+      
       2025-08-21T15:22:26.323883+00:00 thm-vm sudo: pam_unix(sudo:session): session opened for user root(uid=0) by ubuntu(uid=1000)
       2025-08-21T15:22:26.332614+00:00 thm-vm su[1091]: (to root) root on pts/1
       2025-08-21T15:22:26.333162+00:00 thm-vm su[1091]: pam_unix(su:session): session opened for user root(uid=0) by ubuntu(uid=0)
@@ -264,6 +271,7 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
     </details>
     <details>
       <summary>log8</summary>
+      
       2025-08-21T16:38:44.936767+00:00 thm-vm sshd[18479]: Invalid user sol from 193.32.162.145 port 46702
       2025-08-21T16:38:45.105443+00:00 thm-vm sshd[18479]: pam_unix(sshd:auth): check pass; user unknown
       2025-08-21T16:38:45.105708+00:00 thm-vm sshd[18479]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=193.32.162.145
@@ -298,26 +306,29 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
 - 28 de agosto de 2025:
     
     Novamente altera a senha do usuário ubuntu, inicia o serviço ssh e habilita o usuário ubuntu (log1). Então o usuário acessa o arquivo “bash.bashrc” às 11:52 e novamente às 11:53, o que pode indicar possível injeção de script para pesistência, in (log2). Por fim, encerra a conexão (log3), repetindo o processo de conexão.
+  <details>
+    <summary>logs 28/08/2025</summary>
     <details>
-      <summary>logs 28/08/2025</summary>
-      <details>
-        <summary>log1</summary>
-        2025-08-28T11:51:24.671124+00:00 thm-vm sshd[885]: Server listening on 0.0.0.0 port 22.
-        2025-08-28T11:51:24.671303+00:00 thm-vm sshd[885]: ➡️Server listening on :: port 22.
-        2025-08-28T11:51:24.737937+00:00 thm-vm sshd[886]: Connection closed by 10.100.100.159 port 54353
-        2025-08-28T11:51:48.242199+00:00 thm-vm sshd[1209]: ➡️Accepted publickey for ubuntu from 10.14.105.255 port 12199 ssh2: RSA SHA256:oj8xLijWySiv2Jzh/N9DI1upm+hMm9zZJ6hw6LMDEHc
-        2025-08-28T11:51:48.247389+00:00 thm-vm sshd[1209]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
-        2025-08-28T11:51:48.271963+00:00 thm-vm systemd-logind[636]: New session 1 of user ubuntu.
-      </details>
-      <details>
-        <summary>log2</summary>
+      <summary>log1</summary>
+        
+          2025-08-28T11:51:24.671124+00:00 thm-vm sshd[885]: Server listening on 0.0.0.0 port 22.
+          2025-08-28T11:51:24.671303+00:00 thm-vm sshd[885]: ➡️Server listening on :: port 22.
+          2025-08-28T11:51:24.737937+00:00 thm-vm sshd[886]: Connection closed by 10.100.100.159 port 54353
+          2025-08-28T11:51:48.242199+00:00 thm-vm sshd[1209]: ➡️Accepted publickey for ubuntu from 10.14.105.255 port 12199 ssh2: RSA SHA256:oj8xLijWySiv2Jzh/N9DI1upm+hMm9zZJ6hw6LMDEHc
+          2025-08-28T11:51:48.247389+00:00 thm-vm sshd[1209]: pam_unix(sshd:session): session opened for user ubuntu(uid=1000) by ubuntu(uid=0)
+          2025-08-28T11:51:48.271963+00:00 thm-vm systemd-logind[636]: New session 1 of user ubuntu.
+    </details>
+    <details>
+      <summary>log2</summary>
+        
         2025-08-28T11:54:19.384138+00:00 thm-vm sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu ; USER=root ; ➡️COMMAND=/usr/bin/su
         2025-08-28T11:54:19.385385+00:00 thm-vm sudo: pam_unix(sudo:session): session opened for user root(uid=0) by ubuntu(uid=1000)
         2025-08-28T11:54:19.394517+00:00 thm-vm su[1384]: (to root) root on pts/1
         2025-08-28T11:53:46.533671+00:00 thm-vm sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu ; USER=root ; ➡️COMMAND=/usr/bin/nano /etc/bash.bashrc
-      </details>
-      <details>
-        <summary>log3</summary>
+    </details>
+    <details>
+      <summary>log3</summary>
+  
         2025-08-28T11:54:19.395051+00:00 thm-vm su[1384]: pam_unix(su:session): session opened for user root(uid=0) by ubuntu(uid=0)
         2025-08-28T11:55:45.094799+00:00 thm-vm su[1384]: pam_unix(su:session): session closed for user root
         2025-08-28T11:55:45.096868+00:00 thm-vm sudo: pam_unix(sudo:session): session closed for user root
@@ -326,8 +337,8 @@ Observando as datas dos eventos, percebo 6 períodos diferentes: 21/08/2025, 28/
         2025-08-28T11:56:29.834125+00:00 thm-vm sshd[1302]: Disconnected from user ubuntu 10.14.105.255 port 12199
         2025-08-28T11:56:29.834299+00:00 thm-vm sshd[1209]: pam_unix(sshd:session): session closed for user ubuntu
         2025-08-28T11:56:29.835269+00:00 thm-vm systemd-logind[636]: Session 1 logged out. Waiting for processes to exit.
-      </details>
     </details>
+  </details>
 
 - 02 de setembro de 2025:
     
@@ -340,6 +351,7 @@ E assim continua nas datas: 10 de setembro de 2025, 22 de outubro de 2025 e 08 d
   <summary>nomes de usuário</summary>
   <details>
     <summary>1</summary>
+    
     ubuntu@thm-vm:~$ cat auth.log | grep "invalid user"
     2025-08-21T16:38:47.168117+00:00 thm-vm sshd[18479]: Failed password for invalid user sol from 193.32.162.145 port 46702 ssh2
     2025-08-21T16:38:47.491436+00:00 thm-vm sshd[18479]: Connection closed by invalid user sol 193.32.162.145 port 46702 [preauth]
@@ -358,6 +370,7 @@ E assim continua nas datas: 10 de setembro de 2025, 22 de outubro de 2025 e 08 d
   </details>
   <details>
     <summary>2</summary>
+    
     ubuntu@thm-vm:~$ cat auth.log | grep "Accepted password"
     2025-08-21T17:10:08.113644+00:00 thm-vm sshd[16876]: Accepted password for root from 91.224.92.79 port 51555 ssh2
     2026-06-08T14:05:53.610859+00:00 thm-vm sshd[1088]: Accepted password for ubuntu from 10.64.91.229 port 57098 ssh2
@@ -481,20 +494,20 @@ Após o download o atacante procura executar o arquivo, primeiro concedendo perm
 <details>
   <summary>log</summary>
 
-  ubuntu@thm-vm:~/scenario$ sudo ausearch -i -if audit.log | grep "kernupd"
-  type=PROCTITLE msg=audit(09/11/25 21:14:55.515:2254) : ➡️proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
-  type=EXECVE msg=audit(09/11/25 21:14:55.515:2254) : argc=5 a0=tar a1=xzf a2=kernupd.tar.gz a3=-C a4=/tmp/.apt 
-  type=PROCTITLE msg=audit(09/11/25 21:14:55.517:2255) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
-  type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2256) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
-  type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2257) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
-  type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2258) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
-  type=PROCTITLE msg=audit(09/11/25 21:16:03.850:2331) : ➡️proctitle=chmod +x /tmp/.apt/kernupd/kernupd
-  type=EXECVE msg=audit(09/11/25 21:16:03.850:2331) : argc=3 a0=chmod a1=+x a2=/tmp/.apt/kernupd/kernupd 
-  type=PROCTITLE msg=audit(09/11/25 21:16:08.666:2337) : ➡️proctitle=nohup /tmp/.apt/kernupd/kernupd 
-  type=EXECVE msg=audit(09/11/25 21:16:08.666:2337) : argc=2 a0=nohup a1=/tmp/.apt/kernupd/kernupd 
-  type=PROCTITLE msg=audit(09/11/25 21:16:08.668:2338) : proctitle=nohup /tmp/.apt/kernupd/kernupd 
-  type=EXECVE msg=audit(09/11/25 21:16:08.668:2338) : argc=1 a0=/tmp/.apt/kernupd/kernupd 
-  type=SYSCALL msg=audit(09/11/25 21:16:08.668:2338) : arch=x86_64 syscall=execve success=yes exit=0 a0=0x7ffe3b636655 a1=0x7ffe3b634550 a2=0x7ffe3b634560 a3=0x8 items=2 ppid=5393 pid=5566 auid=root uid=root gid=root euid=root suid=root fsuid=root egid=root sgid=root fsgid=root tty=pts1 ses=39 comm=kernupd exe=/tmp/.apt/kernupd/kernupd subj=unconfined key=exec RCH=x86_64 SYSCALL=execve AUID="root" UID="root" GID="root" EUID="root" SUID="root" FSUID="root" EGID="root" SGID="root" FSGID="root" 
+    ubuntu@thm-vm:~/scenario$ sudo ausearch -i -if audit.log | grep "kernupd"
+    type=PROCTITLE msg=audit(09/11/25 21:14:55.515:2254) : ➡️proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
+    type=EXECVE msg=audit(09/11/25 21:14:55.515:2254) : argc=5 a0=tar a1=xzf a2=kernupd.tar.gz a3=-C a4=/tmp/.apt 
+    type=PROCTITLE msg=audit(09/11/25 21:14:55.517:2255) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
+    type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2256) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
+    type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2257) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
+    type=PROCTITLE msg=audit(09/11/25 21:14:55.518:2258) : proctitle=tar xzf kernupd.tar.gz -C /tmp/.apt 
+    type=PROCTITLE msg=audit(09/11/25 21:16:03.850:2331) : ➡️proctitle=chmod +x /tmp/.apt/kernupd/kernupd
+    type=EXECVE msg=audit(09/11/25 21:16:03.850:2331) : argc=3 a0=chmod a1=+x a2=/tmp/.apt/kernupd/kernupd 
+    type=PROCTITLE msg=audit(09/11/25 21:16:08.666:2337) : ➡️proctitle=nohup /tmp/.apt/kernupd/kernupd 
+    type=EXECVE msg=audit(09/11/25 21:16:08.666:2337) : argc=2 a0=nohup a1=/tmp/.apt/kernupd/kernupd 
+    type=PROCTITLE msg=audit(09/11/25 21:16:08.668:2338) : proctitle=nohup /tmp/.apt/kernupd/kernupd 
+    type=EXECVE msg=audit(09/11/25 21:16:08.668:2338) : argc=1 a0=/tmp/.apt/kernupd/kernupd 
+    type=SYSCALL msg=audit(09/11/25 21:16:08.668:2338) : arch=x86_64 syscall=execve success=yes exit=0 a0=0x7ffe3b636655 a1=0x7ffe3b634550 a2=0x7ffe3b634560 a3=0x8 items=2 ppid=5393 pid=5566 auid=root uid=root gid=root euid=root suid=root fsuid=root egid=root sgid=root fsgid=root tty=pts1 ses=39 comm=kernupd exe=/tmp/.apt/kernupd/kernupd subj=unconfined key=exec RCH=x86_64 SYSCALL=execve AUID="root" UID="root" GID="root" EUID="root" SUID="root" FSUID="root" EGID="root" SGID="root" FSGID="root" 
 </details>
 
 Por último, o atacante utilizou o programa de scan, netcat, para identificar os hosts vulneráveis. É possível identificar através do comando sudo ausearch -i -if audit.log | grep -vE "SYSCALL" | grep -w "nc" que retorna:
@@ -618,6 +631,7 @@ Primeiramente procuro pelo endereço IP que o atacante utilizou para encontrar a
 
 <details>
   <summary>log</summary>
+  
     type=PROCTITLE msg=audit(09/23/25 14:53:00.821:2134) : proctitle=find . -name *pass* 
     type=EXECVE msg=audit(09/23/25 14:53:00.821:2134) : argc=4 a0=find a1=. a2=-name a3=*pass* 
     type=PROCTITLE msg=audit(09/23/25 14:53:10.724:2136) : ➡️proctitle=grep -iR pass . 
